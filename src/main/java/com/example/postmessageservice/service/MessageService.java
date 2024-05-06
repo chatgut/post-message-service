@@ -1,28 +1,15 @@
 package com.example.postmessageservice.service;
 
-import com.example.postmessageservice.model.Message;
-import com.example.postmessageservice.repository.MessageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.example.postmessageservice.dto.MessageDTO;
+import com.example.postmessageservice.entity.MessageEntity;
 
 import java.util.List;
 
-@Service
-public class MessageService {
+public interface MessageService {
 
-    @Autowired
-    private MessageRepository messageRepository;
+    MessageDTO getMessageById(String id);
 
-    public List<Message> getMessages() {
-        return messageRepository.findAll();
-    }
+    List<MessageDTO> getAllMessages();
 
-    public Message getMessageById(String id) {
-        return messageRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("No message by ID: " + id));
-    }
-
-    public Message saveMessage(Message message) {
-        return messageRepository.save(message);
-    }
+    MessageEntity createMessage(MessageEntity messageEntity);
 }
