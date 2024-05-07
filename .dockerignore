@@ -1,0 +1,25 @@
+# Ignore Maven target directory
+/target/
+
+# Ignore IntelliJ IDEA project files
+.idea/
+
+# Ignore Eclipse project files
+.classpath
+.project
+.settings/
+
+# Ignore logs generated during development
+*.log
+
+# Ignore temporary files
+*.tmp
+*.bak
+
+# Ignore Docker-related files
+.dockerignore
+.docker/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
