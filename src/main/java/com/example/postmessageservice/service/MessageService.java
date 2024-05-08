@@ -12,4 +12,6 @@ public interface MessageService {
     List<MessageDTO> getAllMessages();
 
     MessageEntity createMessage(MessageEntity messageEntity);
+
+    boolean deleteMessage(String id);
 }
