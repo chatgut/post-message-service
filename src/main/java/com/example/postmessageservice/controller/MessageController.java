@@ -1,7 +1,6 @@
 package com.example.postmessageservice.controller;
 
 import com.example.postmessageservice.dto.MessageDTO;
-import com.example.postmessageservice.entity.MessageEntity;
 import com.example.postmessageservice.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,26 +13,32 @@ import java.util.List;
 @CrossOrigin
 public class MessageController {
 
+    private MessageService messageService;
 
     @Autowired
-    private MessageService messageService;
+    public MessageController(MessageService messageService) {
+        this.messageService = messageService;
+    }
 
     @GetMapping()
     public ResponseEntity<List<MessageDTO>> getAllMessages() {
-        List<MessageDTO> messageDTOList = messageService.getAllMessages();
-        return new ResponseEntity<>(messageDTOList, HttpStatus.OK);
+        List <MessageDTO> messageList = messageService.getAllMessages();
+        return new ResponseEntity<>(messageList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MessageDTO> getMessageById(@PathVariable ("id")String id) {
         MessageDTO messageDTO = messageService.getMessageById(id);
-        return new ResponseEntity <> (messageDTO, HttpStatus.OK);
+        if (messageDTO != null) {
+            return new ResponseEntity<>(messageDTO, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping()
-    public ResponseEntity<MessageEntity> saveMessage(@RequestBody MessageEntity messageEntity) {
-        MessageEntity savedMessage = messageService.createMessage(messageEntity);
-        return new ResponseEntity<>(savedMessage, HttpStatus.CREATED);
+    @PostMapping()
+    public ResponseEntity<MessageDTO> saveMessage(@RequestBody MessageDTO messageDTO) {
+        MessageDTO saveMessage = messageService.createMessage(messageDTO);
+        return new ResponseEntity<>(saveMessage, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

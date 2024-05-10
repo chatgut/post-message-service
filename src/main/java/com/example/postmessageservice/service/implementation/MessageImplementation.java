@@ -5,7 +5,6 @@ import com.example.postmessageservice.entity.MessageEntity;
 import com.example.postmessageservice.mapper.MessageMapper;
 import com.example.postmessageservice.repository.MessageRepository;
 import com.example.postmessageservice.service.MessageService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -16,25 +15,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
-
 @Service
 public class MessageImplementation implements MessageService {
 
-    @Autowired
-    private MessageRepository messageRepository;
+    private final MessageRepository messageRepository;
+    private final MessageMapper messageMapper;
 
     @Autowired
-    private ModelMapper modelMapper;
+    public MessageImplementation(MessageRepository messageRepository, MessageMapper messageMapper) {
+        this.messageRepository = messageRepository;
+        this.messageMapper = messageMapper;
+    }
 
     @Cacheable(value = "messages", key = "#id")
     @Override
     public MessageDTO getMessageById(String id) {
         Optional<MessageEntity> messageEntity = messageRepository.findById(id);
-        if(messageEntity.isPresent()) {
-            return modelMapper.map(messageEntity.get(), MessageDTO.class);
-        }
-        return MessageMapper.convertEntityToDto(messageEntity.get());
+        return messageEntity.map(messageMapper::toDto).orElse(null);
     }
 
     @Cacheable(value = "messages")
@@ -42,17 +39,18 @@ public class MessageImplementation implements MessageService {
     public List<MessageDTO> getAllMessages() {
         List<MessageEntity> messageList = messageRepository.findAll();
         List<MessageDTO> messageDTOList = new ArrayList<>();
-        for(MessageEntity message:messageList) {
-            MessageDTO messageDTO = modelMapper.map(message, MessageDTO.class);
-            messageDTOList.add(messageDTO);
+        for (MessageEntity message : messageList) {
+            messageDTOList.add(messageMapper.toDto(message));
         }
         return messageDTOList;
     }
 
     @CachePut(value = "messages", key = "#result.id")
     @Override
-    public MessageEntity createMessage(MessageEntity messageEntity) {
-        return messageRepository.save(messageEntity);
+    public MessageDTO  createMessage(MessageDTO messageDTO) {
+        MessageEntity message = messageMapper.toEntity(messageDTO);
+        MessageEntity savedMessage = messageRepository.save(message);
+        return messageMapper.toDto(savedMessage);
     }
 
     @CacheEvict(value = "messages", key = "#id")
