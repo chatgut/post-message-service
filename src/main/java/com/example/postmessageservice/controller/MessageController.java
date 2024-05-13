@@ -2,6 +2,7 @@ package com.example.postmessageservice.controller;
 
 import com.example.postmessageservice.dto.MessageDTO;
 import com.example.postmessageservice.service.MessageService;
+import com.example.postmessageservice.service.RabbitMqProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +15,12 @@ import java.util.List;
 public class MessageController {
 
     private MessageService messageService;
+    private RabbitMqProducer producer;
 
     @Autowired
-    public MessageController(MessageService messageService) {
+    public MessageController(MessageService messageService, RabbitMqProducer producer) {
         this.messageService = messageService;
+        this.producer = producer;
     }
 
     @GetMapping()
