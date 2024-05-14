@@ -2,6 +2,7 @@ package com.example.postmessageservice.controller;
 
 import com.example.postmessageservice.dto.MessageDTO;
 import com.example.postmessageservice.service.MessageService;
+import com.example.postmessageservice.service.RabbitMqJsonProducer;
 import com.example.postmessageservice.service.RabbitMqProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,16 +17,19 @@ public class MessageController {
 
     private MessageService messageService;
     private RabbitMqProducer producer;
+    private RabbitMqJsonProducer jsonProducer;
 
     @Autowired
-    public MessageController(MessageService messageService, RabbitMqProducer producer) {
+    public MessageController(MessageService messageService, RabbitMqProducer producer, RabbitMqJsonProducer jsonProducer) {
         this.messageService = messageService;
         this.producer = producer;
+        this.jsonProducer = jsonProducer;
     }
 
     @GetMapping()
     public ResponseEntity<List<MessageDTO>> getAllMessages() {
         List <MessageDTO> messageList = messageService.getAllMessages();
+        producer.sendMessage(messageList.toString());
         return new ResponseEntity<>(messageList, HttpStatus.OK);
     }
 
@@ -33,6 +37,7 @@ public class MessageController {
     public ResponseEntity<MessageDTO> getMessageById(@PathVariable ("id")String id) {
         MessageDTO messageDTO = messageService.getMessageById(id);
         if (messageDTO != null) {
+            producer.sendMessage(messageDTO.toString());
             return new ResponseEntity<>(messageDTO, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -41,6 +46,7 @@ public class MessageController {
     @PostMapping()
     public ResponseEntity<MessageDTO> saveMessage(@RequestBody MessageDTO messageDTO) {
         MessageDTO saveMessage = messageService.createMessage(messageDTO);
+        jsonProducer.sendJsonMessage(saveMessage);
         return new ResponseEntity<>(saveMessage, HttpStatus.CREATED);
     }
 

@@ -2,6 +2,7 @@
 FROM eclipse-temurin:22-jre-alpine as build
 WORKDIR /app
 COPY provider/target/post-message-service-0.0.1-SNAPSHOT.jar /app/
+# ENV SPRING_PROFILES_ACTIVE=prod
 CMD ["java", "/app", "-jar", "post-message-service-0.0.1-SNAPSHOT.jar"]
 # Use a GraalVM base image
 #FROM oracle/graalvm-ce:latest AS graalvm
