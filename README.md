@@ -5,19 +5,21 @@ The microservice acts as a platform for efficiently storing and managing message
 This application runs on port 8000.  <br>
 To run the application using Docker pull the Docker Image:
 ```bash
-docker pull hacee/post-message-service:latest
+docker pull hacee/post-message-service:v1.0.0
 ```
 
 ## Docker image requirements
 - MongoDB running on port 27017
 - Redis running on port 6379
-- RabbitMQ running on port 5672 for operation and port 15672 for accessing the management interface
+- RabbitMQ running on port 5672 for operation and port 15672 for accessing the management interface.
 
-## Environment variables 
-rabbitmq_host=localhost <br>
-rabbitmq_port=5672 <br>
-rabbitmq_username=guest <br>
-rabbitmq_password=guest <br>
+## Environment variables
+**The following environment variables are required to run RabbitMQ management interface:** <br>
+
+```
+SPRING_RABBITMQ_USERNAME="guest" <br>
+SPRING_RABBITMQ_PASSWORD="guest" <br>
+```
 
 ## API Reference
 **Get all messages** <br>

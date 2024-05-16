@@ -6,12 +6,12 @@ services:
     container_name: "post-message-service"
     environment:
         - SPRING_DATA_MONGODB_URI=mongodb://messagedb:27017/messagedb
-        - SPRING_REDIS_HOST="amqp://rabbitmq:5672"
-        - SPRING_RABBITMQ_HOST="redis://redis:6379:15672"
+        - SPRING_RABBITMQ_URI=amqp://rabbitmq:5672
+        - SPRING_REDIS_URI=redis://redis:6379
         - SPRING_RABBITMQ_USERNAME="guest"
         - SPRING_RABBITMQ_PASSWORD="guest"
     ports:
-        - '8080:8080'
+        - '8000:8000'
 
   messagedb:
     image: mongo:latest
