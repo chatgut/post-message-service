@@ -17,8 +17,8 @@ docker pull hacee/post-message-service:v1.0.0
 **The following environment variables are required to run RabbitMQ management interface:** <br>
 
 ```
-SPRING_RABBITMQ_USERNAME="guest" <br>
-SPRING_RABBITMQ_PASSWORD="guest" <br>
+SPRING_RABBITMQ_USERNAME="guest"
+SPRING_RABBITMQ_PASSWORD="guest"
 ```
 
 ## API Reference
