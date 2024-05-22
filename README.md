@@ -43,3 +43,13 @@ Delete a message by its unique identifier.
 ```
   http://localhost:8000/posts/{id}
 ```
+**Request body in JSON format** 
+Example: <br>
+
+```
+{
+    "from": "Sender",
+    "to": "Receiver",
+    "message": "Text message"
+}
+```
