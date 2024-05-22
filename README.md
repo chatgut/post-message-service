@@ -17,8 +17,8 @@ docker pull hacee/post-message-service:v1.0.0
 **The following environment variables are required to run RabbitMQ management interface:** <br>
 
 ```
-SPRING_RABBITMQ_USERNAME="guest" <br>
-SPRING_RABBITMQ_PASSWORD="guest" <br>
+SPRING_RABBITMQ_USERNAME="guest"
+SPRING_RABBITMQ_PASSWORD="guest"
 ```
 
 ## API Reference
@@ -42,4 +42,14 @@ Create a new message.
 Delete a message by its unique identifier.
 ```
   http://localhost:8000/posts/{id}
+```
+**Request body in JSON format** <br>
+Example: <br>
+
+```
+{
+    "from": "Sender",
+    "to": "Receiver",
+    "message": "Text message"
+}
 ```
