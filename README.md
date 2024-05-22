@@ -13,14 +13,6 @@ docker pull hacee/post-message-service:v1.0.0
 - Redis running on port 6379
 - RabbitMQ running on port 5672 for operation and port 15672 for accessing the management interface.
 
-## Environment variables
-**The following environment variables are required to run RabbitMQ management interface:** <br>
-
-```
-SPRING_RABBITMQ_USERNAME="guest"
-SPRING_RABBITMQ_PASSWORD="guest"
-```
-
 ## API Reference
 **Get all messages** <br>
 Retrieve all stored messages.
