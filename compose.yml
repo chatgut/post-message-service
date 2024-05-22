@@ -2,32 +2,31 @@ version: "3.8"
 
 services:
   post-message-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: hacee/post-message-service:v1.0.0
-    container_name: "post-message-service"
     environment:
-        - SPRING_DATA_MONGODB_URI=mongodb://messagedb:27017/messagedb
-        - SPRING_RABBITMQ_URI=amqp://rabbitmq:5672
-        - SPRING_REDIS_URI=redis://redis:6379
-        - SPRING_RABBITMQ_USERNAME="guest"
-        - SPRING_RABBITMQ_PASSWORD="guest"
+      - SPRING_DATA_MONGODB_URI=mongodb://messagedb:27017/messagedb
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_DATA_REDIS_HOST=redis
+
     ports:
-        - '8000:8000'
+        - '8000:8080'
 
   messagedb:
     image: mongo:latest
-    container_name: "messagedb"
     ports:
       - '27017:27017'
 
   redis:
     image: 'redis:latest'
-    container_name: "redis-1"
     ports:
       - '6379:6379'
 
   rabbitmq:
-    image: 'rabbitmq:management'
-    container_name: "rabbitmq"
+    image: rabbitmq:management
+    restart: no
     ports:
       - '5672:5672'
       - '15672:15672'
